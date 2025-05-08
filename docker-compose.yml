@@ -1,0 +1,13 @@
+
+
+version: '3.8'
+
+services:
+    faf-api:
+      image: bitnami/postgresql
+      ports:
+        -"5432:5432"
+      environment:
+      - POSTGRESQL_USARNAME=DOCKER
+      - POSTGRESQL_PASSWORD=DOCKER
+      - POSTGRESQL_DATABASE=apifaf
