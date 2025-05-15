@@ -1,5 +1,7 @@
 import { prisma } from '@/lib/prisma'
-import { userRegisterUseCase } from '@/use-cases/user-register'
+import { PrismaUsersRepository } from '@/repository/prisma/prisma-users-repository'
+import { UserAlredyExistsError } from '@/use-cases/erros/user-already-exists'
+import { UserRegisterUsecase } from '@/use-cases/user-register'
 import { hash } from 'bcryptjs'
 import { FastifyReply, FastifyRequest } from 'fastify'
 import { z } from 'zod'
@@ -22,7 +24,10 @@ export async function userRegister(
   )
 
   try {
-    await userRegisterUseCase({
+    const prismaUsersRepository = new PrismaUsersRepository()
+    const userRegisterUseCase = new UserRegisterUsecase(prismaUsersRepository)
+
+    await userRegisterUseCase.execute({
       name,
       password,
       addres,
@@ -31,7 +36,10 @@ export async function userRegister(
       phone
     })
   } catch (err) {
-    return reply.status(409).send()
+    if (err instanceof UserAlredyExistsError) {
+      return reply.status(409).send({ message: err.message })
+    }
+    throw err
   }
   return reply.status(200).send()
 } 
