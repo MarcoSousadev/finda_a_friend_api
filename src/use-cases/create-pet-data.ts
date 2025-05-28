@@ -1,41 +1,32 @@
 import { Pet, Prisma } from '@prisma/client'
-import { petDataRepository } from '@/repository/pet-data-repository'
+import { PetDataRepository } from '@/repository/pet-data-repository'
 
-interface createPetDataUseCaseRequest {
+interface CreatePetDataUseCaseRequest {
   id?: number
   name: string
   race: string
   size: string
   photo: string
   description: string
-  userId:string
+  userId: string
 }
 
-interface createPetDataUseCaseResponse {
+interface CreatePetDataUseCaseResponse {
   pet: Pet
 }
 
 
 export class CreatePetDataUseCase {
-  constructor(private petDataRepository: petDataRepository) {}
+  constructor(private petDataRepository: PetDataRepository) {}
   async execute({
     name,
     race,
     size,
     photo,
     description,
-    userId,
-   
-  
-  }: createPetDataUseCaseRequest) 
-  
-  
-  {
-   
-
-    
+    userId
+  }: CreatePetDataUseCaseRequest): Promise<CreatePetDataUseCaseResponse> {
     const pet = await this.petDataRepository.create({
-      
       name,
       race,
       size,

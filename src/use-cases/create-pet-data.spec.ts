@@ -1,15 +1,11 @@
 import { expect, test, describe, it } from 'vitest'
-import { InMemoryCreatePetDataRepository } from '@/repository/in-memory/in-memory-create-pet-date-repository'
+import { inMemoryPetDataRepository } from '@/repository/in-memory/in-memory-pet-date-repository'
 import { CreatePetDataUseCase } from './create-pet-data'
 
-describe('user register use case', ()=>{
-  
-
-it('should be able to register ', async ()=> {
-    const PetDataRepository = new InMemoryCreatePetDataRepository()
+describe('user register use case', () => {
+  it('should be able to register ', async () => {
+    const PetDataRepository = new inMemoryPetDataRepository()
     const createPetDataUseCase = new CreatePetDataUseCase(PetDataRepository)
-
-    
 
     const { pet } = await createPetDataUseCase.execute({
       id: 1,
@@ -21,9 +17,6 @@ it('should be able to register ', async ()=> {
       userId: '123456'
     })
 
-     
-     expect(pet.id).toEqual(expect.any(Number))
+    expect(pet.id).toEqual(expect.any(Number))
   })
-
-
 })
